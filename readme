@@ -1,0 +1,9 @@
+这是一个基于NLog的日志系统。
+
+主要用于尝试构建一个可分析的日志体系。
+
+项目包括了NLog的扩展和一个日志客户端。
+
+注意：
+1、项目使用了NLog，但是源代码中不包括NLog。请从NLog官方网站下载并安装。http://nlog.codeplex.com/releases/view/32639
+2、项目使用了NHibernate，但是源代码中不包括NHibernate。请从NHibernate官方网站下载，并将dll文件复制到lib\Nhibernate目录中。
