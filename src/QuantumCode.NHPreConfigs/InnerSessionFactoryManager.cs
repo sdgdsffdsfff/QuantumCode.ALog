@@ -96,6 +96,32 @@ namespace QuantumCode.NHEx
             }
         }
 
+        public ISessionFactory CreateInstallTableSessionFactoryByConnectionString(ConnectionStringValueType connectionString, Func<ConnectionStringValueType, Configuration> configurationBuilder)
+        {
+            var config = configurationBuilder(connectionString);
+
+            var mapping = GetMapping();
+
+            config.AddMapping(mapping);
+
+            ISessionFactory retValue = config.BuildSessionFactory();
+
+            return retValue;
+        }
+
+        public ISessionFactory CreateInstallTableSessionFactoryByConnectionStringName(ConnectionStringValueType name, Func<ConnectionStringValueType, Configuration> configurationBuilder)
+        {
+            var config = configurationBuilder(name);
+
+            var mapping = GetMapping();
+
+            config.AddMapping(mapping);
+
+            ISessionFactory retValue = config.BuildSessionFactory();
+
+            return retValue;
+        }
+
         public void AddMapping(Type mappingType)
         {
             if (!m_Types.ContainsKey(mappingType.FullName))

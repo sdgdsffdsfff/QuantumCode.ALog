@@ -66,7 +66,14 @@ namespace QuantumCode.NHEx
         {
             lock (m_Locker)
             {
-                
+                if (connectionString.IsName)
+                {
+                    m_Inner.CreateInstallTableSessionFactoryByConnectionStringName(connectionString, DbPreConfigsManager.Current.DefaultConfig.DbPropertiesBuilderForUpdate);
+                }
+                else
+                {
+                    m_Inner.CreateInstallTableSessionFactoryByConnectionString(connectionString, DbPreConfigsManager.Current.DefaultConfig.DbPropertiesBuilderForUpdate);
+                }
             }
         }
 
@@ -86,6 +93,14 @@ namespace QuantumCode.NHEx
             lock (m_Locker)
             {
                 m_Inner.AddMappings(mappingTypes);
+            }
+        }
+
+        public static void AddMapping(string assemblyName)
+        {
+            lock (m_Locker)
+            {
+                m_Inner.AddMapping(assemblyName);
             }
         }
     }

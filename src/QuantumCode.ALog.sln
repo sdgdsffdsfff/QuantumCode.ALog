@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumCode.ALog.Domain", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumCode.NHEx", "QuantumCode.NHPreConfigs\QuantumCode.NHEx.csproj", "{7C77449B-45B1-4274-90D3-990358839CAC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumCode.ALog.Sample", "QuantumCode.ALog.Sample\QuantumCode.ALog.Sample.csproj", "{1FA818A2-F4A6-4C36-9BDD-E7B28A79A4AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{7C77449B-45B1-4274-90D3-990358839CAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C77449B-45B1-4274-90D3-990358839CAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C77449B-45B1-4274-90D3-990358839CAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FA818A2-F4A6-4C36-9BDD-E7B28A79A4AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FA818A2-F4A6-4C36-9BDD-E7B28A79A4AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FA818A2-F4A6-4C36-9BDD-E7B28A79A4AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FA818A2-F4A6-4C36-9BDD-E7B28A79A4AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

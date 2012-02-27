@@ -53,7 +53,7 @@ namespace QuantumCode.NHEx.Config
             }
         }
 
-        public Func<string, Configuration> DbPropertiesBuilderForUpdate
+        public Func<ConnectionStringValueType, Configuration> DbPropertiesBuilderForUpdate
         {
             get
             {
@@ -61,11 +61,10 @@ namespace QuantumCode.NHEx.Config
                 {
                     var retValue = new Configuration();
 
-                    ConnectionString vname = name;
-
                     retValue.DataBaseIntegration(c =>
                     {
                         DataBaseIntegration(c);
+                        AppendConnectionString(c, name);
                         c.SchemaAction = SchemaAutoAction.Update;
                     });
 
