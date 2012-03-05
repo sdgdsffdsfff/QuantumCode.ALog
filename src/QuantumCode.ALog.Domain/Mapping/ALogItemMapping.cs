@@ -11,6 +11,8 @@ namespace QuantumCode.ALog.Domain.Mapping
     {
         public ALogItemMapping()
         {
+            Table("alog");
+
             Id(p => p.ID, map => { map.Column("id"); map.Generator(Generators.Identity); });
 
             Property(p => p.Action, map => { map.Column("action"); map.Length(50); map.NotNullable(false); });
