@@ -12,37 +12,69 @@ namespace QuantumCode.ALog.NLogEx
     {
         private static object _ModifyDBLocker = new object();
 
+        private static string _LogDirFullPath;
+
         static SqliteNLogManager()
         {
-            string fileName = DateTime.Now.DayOfYear.ToString();
+            _LogDirFullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
 
-            string directoryName = DateTime.Now.Year.ToString("yyyy");
-
-            string dirFullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs\\" + directoryName);
-
-            if (!Directory.Exists(dirFullPath))
-                Directory.CreateDirectory(dirFullPath);
-
-            string fileFullPath = Path.Combine(dirFullPath, fileName + ".al");
-
-            if (!File.Exists(fileFullPath))
+            if (!Directory.Exists(_LogDirFullPath))
             {
-                System.Data.SQLite.SQLiteConnection.CreateFile(fileFullPath);
+                lock (_ModifyDBLocker)
+                {
+                    if (!Directory.Exists(_LogDirFullPath))
+                        Directory.CreateDirectory(_LogDirFullPath);
+                }
             }
 
-            Connect2LogDB(fileFullPath);
+            CheckLogDB();
         }
 
-        private static void Connect2LogDB(string fileFullName)
+        private static void CheckLogDB()
         {
-            lock (_ModifyDBLocker)
+            string fileName = "Logs.adb";
+
+            string fileFullName = Path.Combine(_LogDirFullPath, fileName);
+
+            if (!File.Exists(fileFullName))
             {
-                LogManager.Configuration = SqliteNLogConfig.CreateConfiguration("Data Source=" + fileFullName);
+                lock (_ModifyDBLocker)
+                {
+                    if (!File.Exists(fileFullName))
+                    {
+                        System.Data.SQLite.SQLiteConnection.CreateFile(fileFullName);
 
-                SessionFactoryManager.AddMapping("QuantumCode.ALog.Domain.dll");
+                        SessionFactoryManager.AddMapping(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "QuantumCode.ALog.Domain.dll"));
 
-                SessionFactoryManager.InstallTablesBy(new ConnectionString("Data Source=" + fileFullName));
+                        SessionFactoryManager.InstallTablesBy(new ConnectionString("Data Source=" + fileFullName));
+
+                        LogManager.Configuration = SqliteNLogConfig.CreateConfiguration("Data Source=" + fileFullName);
+                    }
+                }
             }
+            else
+            {
+                if (null == LogManager.Configuration)
+                {
+                    lock (_ModifyDBLocker)
+                    {
+                        if (null == LogManager.Configuration)
+                        {
+                            LogManager.Configuration = SqliteNLogConfig.CreateConfiguration("Data Source=" + fileFullName);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static ALogger GetLogger(string creator)
+        {
+            ALogger retValue = new ALogger();
+
+            retValue.Logger = LogManager.GetLogger(creator);
+            retValue.Creator = creator;
+
+            return retValue;
         }
     }
 }

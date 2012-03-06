@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using System.IO;
 using System.Data.SQLite;
 using QuantumCode.NHEx;
+using QuantumCode.ALog.NLogEx;
+using System.Threading;
 
 namespace QuantumCode.ALog.Sample
 {
@@ -39,6 +41,48 @@ namespace QuantumCode.ALog.Sample
                 SessionFactoryManager.AddMapping(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "QuantumCode.ALog.Domain.dll"));
 
                 SessionFactoryManager.InstallTablesBy(new ConnectionString("Data Source=" + dbName));
+            }
+
+            MessageBox.Show("OK");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ALogger logger = SqliteNLogManager.GetLogger("test1");
+
+            for (int j = 0; j < 10; j++)
+            {
+                logger.Debug("test.write", "测试数据：" + j.ToString());
+            }
+            MessageBox.Show("OK");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            List<Thread> threads = new List<Thread>();
+
+            threads.Add(new Thread(new ThreadStart(StartLog)));
+            threads.Add(new Thread(new ThreadStart(StartLog)));
+            threads.Add(new Thread(new ThreadStart(StartLog)));
+            threads.Add(new Thread(new ThreadStart(StartLog)));
+            threads.Add(new Thread(new ThreadStart(StartLog)));
+
+            foreach (Thread t in threads)
+                t.Start();
+
+            foreach (Thread t in threads)
+                t.Join();
+
+            MessageBox.Show("OK");
+        }
+
+        private void StartLog()
+        {
+            ALogger logger = SqliteNLogManager.GetLogger(Thread.CurrentThread.ManagedThreadId.ToString());
+
+            for (int j = 0; j < 10; j++)
+            {
+                logger.Debug("test.write", "测试数据：" + j.ToString());
             }
         }
     }
